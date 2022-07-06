@@ -9,5 +9,9 @@ class Source(models.Model):
         WEB = 2, "Site Web"
         REVUE = 3, "Revue"
 
-    name = models.CharField(max_length=250)
+    nom = models.CharField(max_length=250)
     type = models.IntegerField(choices=SourceType.choices)
+    
+    def __str__(self):
+        return self.nom
+    

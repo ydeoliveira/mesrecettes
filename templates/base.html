@@ -1,0 +1,21 @@
+{%load static%}
+
+<head>
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+</head>
+<body>
+	<div>
+		{{ form.media }}
+		<form method="post">
+			{% csrf_token %}
+			{{form}}
+			<input type="submit" />
+		</form>
+	</div>
+	
+	{%if recettes%}
+		{%for r in recettes%}
+			* {{r}}<br/>
+		{%endfor%}
+	{%endif%}
+</body>

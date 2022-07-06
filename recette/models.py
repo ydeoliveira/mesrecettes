@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 
 # Create your models here.
 
@@ -15,7 +16,11 @@ class Recette(models.Model):
     nombre = models.IntegerField()
     ingredients = models.ManyToManyField('Ingredient', through='ListeIngredients')
     categorie = models.CharField(max_length=100, choices=Categorie.choices)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
+    batch = models.ForeignKey('Batch', blank=True, null=True, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.nom
 
 class Ingredient(models.Model):
     class Rayon(models.TextChoices):
@@ -29,17 +34,30 @@ class Ingredient(models.Model):
         SALE = 'SA', 'Epicerie salée'
         SUCRE = 'SU', 'Epicerie sucrée'
         
-    name = models.CharField(max_length=150)
+    nom = models.CharField(max_length=150)
     rayon = models.CharField(max_length=100, choices=Rayon.choices)
+    placard = models.BooleanField("Produit du placard", default=False)
+    
+    def __str__(self):
+        return self.nom
     
 class ListeIngredients(models.Model):
     class Unite(models.TextChoices):
         GRAMME = 'g', 'grammes'
         PIECE = 'p', 'pièces'
+        CLITRE = 'cl', 'cl'
+        CAS = 'cas', 'CaS'
+        CAC = 'cac', 'CaC'
+        BOTTE = 'b','bottes'
         
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE)
     recette = models.ForeignKey('Recette', on_delete=models.CASCADE)
     quantite = models.FloatField()
     unite = models.CharField(max_length=50, choices=Unite.choices)
     
+class Batch(models.Model):
+    nom = models.CharField(max_length=200)
     
+    def __str__(self):
+        return self.nom
+     
