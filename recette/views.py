@@ -16,6 +16,8 @@ class SearchEngine(View):
         form = SearchBar(data=request.POST)
         if form.is_valid():
             ingredients = request.POST.getlist('ingredients')
-            recettes = Recette.objects.filter(ingredients__in=ingredients).distinct()
+            recettes = Recette.objects.all()
+            for ing in ingredients :
+                recettes = recettes.filter(ingredients=ing)
             return render(request, self.template_name, {'form': form, 'recettes':recettes})
         return render(request, self.template_name, {'form': form})

@@ -17,8 +17,8 @@ class BatchAutocomplete(autocomplete.Select2QuerySetView):
 class IngredientAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
-        if not self.request.user.is_authenticated:
-            return Ingredient.objects.none()
+        # if not self.request.user.is_authenticated:
+        #     return Ingredient.objects.none()
 
         qs = Ingredient.objects.all()
 
