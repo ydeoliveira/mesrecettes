@@ -19,4 +19,21 @@
 		{%endfor%}
 	{%endif%}
 	
+	{%if courses%}
+		{% for rayon, list_rayon in courses.items %}
+		<h2>{{rayon}}</h2>
+		{%for ingredient, list_unite in list_rayon.items%}
+			{{ingredient}} : 
+			{%for unite, quantite in list_unite.items%}
+				{% if forloop.last %}
+					{{quantite}} {{unite}}
+				{%else%}
+					{{quantite}} {{unite}} + 
+				{%endif%}
+			{%endfor%}
+			<br />
+		{%endfor%}
+		{%endfor%}
+	{%endif%}
+	
 </body>

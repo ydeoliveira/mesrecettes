@@ -22,6 +22,7 @@ urlpatterns = [
     path('', SearchEngine.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('recette/', include('recette.urls')),
+    path('menu/', include('menu.urls')),
     path('source/', include('source.urls')),
     
 ]
