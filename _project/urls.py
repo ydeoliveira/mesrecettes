@@ -25,4 +25,4 @@ urlpatterns = [
     path('menu/', include('menu.urls')),
     path('source/', include('source.urls')),
     
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
