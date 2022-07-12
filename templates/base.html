@@ -18,10 +18,16 @@
 			* {{r}}<br/>
 		{%endfor%}
 	{%endif%}
-	
+
+	<script>
+		function addChart() {
+			url = "https://www.carrefour.fr/api/advertising?event-type=addToCart&page-id=addToCartApiDesktop&environment=d&item=3276557653274&quantity=1&price=3.99";
+			$.ajax(url);
+		}
+	</script>
 	{%if courses%}
 		{% for rayon, list_rayon in courses.items %}
-		<h2>{{rayon}}</h2>
+		<h3>{{rayon}}</h3>
 		{%for ingredient, list_unite in list_rayon.items%}
 			{{ingredient}} : 
 			{%for unite, quantite in list_unite.items%}
@@ -36,4 +42,12 @@
 		{%endfor%}
 	{%endif%}
 	
+	{%if placard%}
+		<b>Vérifier les ingrédients suivants :</b><br />
+		{%for element in placard%}
+			{{element}}<br />
+		{%endfor%}
+	{%endif%}
+	
+	<button id='add' onclick="addChart();" >Chart add</button>
 </body>

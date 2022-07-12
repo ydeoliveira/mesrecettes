@@ -9,6 +9,7 @@ class Courses(View):
     def get(self, request, *args, **kwargs):
         menu = Menu.objects.get(id=kwargs['pk'])
         courses = {}
+        placard = set()
         for repas in menu.menucomposition_set.all() :
             for ingredient in repas.recette.listeingredients_set.all():
                 _rayon = ingredient.ingredient.get_rayon_display()
@@ -16,9 +17,13 @@ class Courses(View):
                 _unite = ingredient.unite
                 if _rayon not in courses.keys() :
                     courses[_rayon] = {}
-                if _ing not in courses[_rayon].keys() :
+                if _ing not in courses[_rayon].keys() and _ing.placard == False :
                     courses[_rayon][_ing] = {}
-                if _unite not in courses[_rayon][_ing] :
+                elif _ing.placard == True :
+                    placard.add(_ing)
+                if _ing.placard == False and _unite not in courses[_rayon][_ing] :
                     courses[_rayon][_ing][_unite] = 0
-                courses[_rayon][_ing][_unite] += ingredient.quantite * repas.portions / ingredient.recette.nombre
-        return render(request, self.template_name, {'courses': courses})
+                
+                if _ing.placard == False :
+                    courses[_rayon][_ing][_unite] += ingredient.quantite * repas.portions / ingredient.recette.nombre
+        return render(request, self.template_name, {'courses': courses, 'placard':placard})

@@ -49,6 +49,7 @@ class ListeIngredients(models.Model):
         CAS = 'cas', 'CaS'
         CAC = 'cac', 'CaC'
         BOTTE = 'b','bottes'
+        VERRE = 'v', 'verres'
         
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE)
     recette = models.ForeignKey('Recette', on_delete=models.CASCADE)
