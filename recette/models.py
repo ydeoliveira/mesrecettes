@@ -18,6 +18,7 @@ class Recette(models.Model):
     categorie = models.CharField(max_length=100, choices=Categorie.choices)
     description = models.TextField(blank=True, null=True)
     batch = models.ForeignKey('Batch', blank=True, null=True, on_delete=models.CASCADE)
+    image = models.URLField(max_length=300, blank=True, null=True)
     
     def __str__(self):
         return self.nom

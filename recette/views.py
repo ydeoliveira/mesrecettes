@@ -6,7 +6,7 @@ from recette.models import Recette
 
 # Create your views here.
 class SearchEngine(View):
-    template_name = 'base.html'
+    template_name = 'search.html'
     
     def get(self, request, *args, **kwargs):
         form = SearchBar()
