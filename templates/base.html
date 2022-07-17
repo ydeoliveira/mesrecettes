@@ -21,8 +21,17 @@
 
 	<script>
 		function addChart() {
-			url = "https://www.carrefour.fr/api/advertising?event-type=addToCart&page-id=addToCartApiDesktop&environment=d&item=3276557653274&quantity=1&price=3.99";
-			$.ajax(url);
+			$.ajax({
+				url: "https://www.carrefour.fr/api/advertising?event-type=addToCart&page-id=addToCartApiDesktop&environment=d&item=3276557653274&quantity=1&price=3.99",
+				beforeSend: function(request) {
+				    request.setRequestHeader("Access-Control-Allow-Origin", "carrefour.fr");
+				 },
+				type: 'GET',
+			    crossDomain: true,
+			    success: function() { alert("Success"); },
+			    error: function() { alert('Failed!'); },
+			    
+			});
 		}
 	</script>
 	{%if courses%}
