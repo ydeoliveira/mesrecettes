@@ -1,0 +1,24 @@
+{%extends "base.html"%}
+{%load static%}
+
+{%block main_content%}
+{%if menus%}
+	<div class="prod">
+	{%for m in menus %}
+			<div class="grid_6">
+	        	<div class="box">
+	          	<div class="maxheight">
+				<h3>Menu du {{m.date}} au {{m.date_fin}} <a href="{%url 'courses' m.id%}"><img width="20" height="20" src="{%static 'images/cart-icon.jpg'%}" /></a></h3>
+				<ul>
+				{%for r in m.recettes.all%}
+				<li /><span title="{{r.reference}} - {{r.source}}">{{r.nom}}</span><br />
+				<center>***</center>
+				{%endfor%}
+				</ul>
+				</div>
+	        	</div>
+      		</div>	
+	{%endfor%}
+	</div>
+{%endif%}
+{%endblock%}

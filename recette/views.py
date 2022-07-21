@@ -5,6 +5,11 @@ from recette.forms import SearchBar
 from recette.models import Recette
 
 # Create your views here.
+class Ingredient(View):
+    template = "produits.html"
+    def get(self, request):
+        return render(request, self.template, {})
+
 class SearchEngine(View):
     template_name = 'search.html'
     
@@ -19,5 +24,5 @@ class SearchEngine(View):
             recettes = Recette.objects.all()
             for ing in ingredients :
                 recettes = recettes.filter(ingredients=ing)
-            return render(request, self.template_name, {'form': form, 'recettes':recettes})
+            return render(request, self.template_name, {'form': form, 'recettes':recettes.distinct()})
         return render(request, self.template_name, {'form': form})

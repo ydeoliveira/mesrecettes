@@ -2,7 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Menu(models.Model):
-    date = models.DateField(auto_now=True)
+    date = models.DateField()
+    date_fin = models.DateField()
     recettes = models.ManyToManyField('recette.Recette', through='MenuComposition')
     
     def __str__(self):

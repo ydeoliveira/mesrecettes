@@ -10,7 +10,7 @@ class BatchAutocomplete(autocomplete.Select2QuerySetView):
         qs = Batch.objects.all()
 
         if self.q:
-            qs = qs.filter(nom__istartswith=self.q)
+            qs = qs.filter(nom__contains=self.q)
 
         return qs
     
@@ -23,7 +23,7 @@ class IngredientAutocomplete(autocomplete.Select2QuerySetView):
         qs = Ingredient.objects.all()
 
         if self.q:
-            qs = qs.filter(nom__istartswith=self.q)
+            qs = qs.filter(nom__contains=self.q)
 
         return qs
     
@@ -36,6 +36,6 @@ class RecetteAutocomplete(autocomplete.Select2QuerySetView):
         qs = Recette.objects.all()
 
         if self.q:
-            qs = qs.filter(nom__istartswith=self.q)
+            qs = qs.filter(nom__contains=self.q)
 
         return qs

@@ -4,8 +4,15 @@ from django.views.generic import View
 from menu.models import Menu
 
 # Create your views here.
+
+class MenuList(View):
+    template_name = "menus.html"
+    def get(self, request):
+        menus = Menu.objects.all().order_by('-date')
+        return render(request, self.template_name, {'menus': menus,})
+    
 class Courses(View):
-    template_name = 'base.html'
+    template_name = "courses.html"
     def get(self, request, *args, **kwargs):
         menu = Menu.objects.get(id=kwargs['pk'])
         courses = {}

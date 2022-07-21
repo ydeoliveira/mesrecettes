@@ -72,11 +72,11 @@ $(document).ready(function () {
       <div class="menu_block">
         <nav>
           <ul class="sf-menu">
-            <li class="current"><a href="index.html">Accueil</a></li>
-            <li><a href="products.html">Produits</a></li>
-            <li><a href="blog.html">Menus</a></li>
-            <li><a href="recipes.html">Recettes</a></li>
-	<li><a href="recipes.html">Admin</a></li>
+            <li><a href="{%url 'home'%}">Accueil</a></li>
+            <li><a href="{%url 'ingredient' %}">Produits</a></li>
+            <li><a href="{% url 'menus' %}">Menus</a></li>
+            <li><a href="#">Recettes</a></li>
+		<li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
           </ul>
         </nav>
         <div class="clear"></div>
@@ -113,48 +113,5 @@ $(document).ready(function () {
     </div>
   </div>
 </footer>
-
-	<div>
 		
-
-	<script>
-		function addChart() {
-			$.ajax({
-				url: "https://www.carrefour.fr/api/advertising?event-type=addToCart&page-id=addToCartApiDesktop&environment=d&item=3276557653274&quantity=1&price=3.99",
-				beforeSend: function(request) {
-				    request.setRequestHeader("Access-Control-Allow-Origin", "carrefour.fr");
-				 },
-				type: 'GET',
-			    crossDomain: true,
-			    success: function() { alert("Success"); },
-			    error: function() { alert('Failed!'); },
-			    
-			});
-		}
-	</script>
-	{%if courses%}
-		{% for rayon, list_rayon in courses.items %}
-		<h3>{{rayon}}</h3>
-		{%for ingredient, list_unite in list_rayon.items%}
-			{{ingredient}} : 
-			{%for unite, quantite in list_unite.items%}
-				{% if forloop.last %}
-					{{quantite}} {{unite}}
-				{%else%}
-					{{quantite}} {{unite}} + 
-				{%endif%}
-			{%endfor%}
-			<br />
-		{%endfor%}
-		{%endfor%}
-	{%endif%}
-	
-	{%if placard%}
-		<b>Vérifier les ingrédients suivants :</b><br />
-		{%for element in placard%}
-			{{element}}<br />
-		{%endfor%}
-	{%endif%}
-	
-	<button id='add' onclick="addChart();" >Chart add</button>
 </body>

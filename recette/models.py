@@ -10,7 +10,7 @@ class Recette(models.Model):
         DESSERT = 'Dessert','Dessert'
     
     
-    nom = models.CharField(max_length=250)
+    nom = models.CharField(max_length=250, unique=True)
     reference = models.ForeignKey('source.Source', on_delete=models.CASCADE)
     source = models.CharField(max_length=200)
     nombre = models.IntegerField()
@@ -19,6 +19,9 @@ class Recette(models.Model):
     description = models.TextField(blank=True, null=True)
     batch = models.ForeignKey('Batch', blank=True, null=True, on_delete=models.CASCADE)
     image = models.URLField(max_length=300, blank=True, null=True)
+    
+    class Meta:
+        ordering = ('nom',)
     
     def __str__(self):
         return self.nom
@@ -35,9 +38,12 @@ class Ingredient(models.Model):
         SALE = 'SA', 'Epicerie salée'
         SUCRE = 'SU', 'Epicerie sucrée'
         
-    nom = models.CharField(max_length=150)
+    nom = models.CharField(max_length=150, unique=True)
     rayon = models.CharField(max_length=100, choices=Rayon.choices)
     placard = models.BooleanField("Produit du placard", default=False)
+    
+    class Meta:
+        ordering = ('nom',)
     
     def __str__(self):
         return self.nom
@@ -58,7 +64,7 @@ class ListeIngredients(models.Model):
     unite = models.CharField(max_length=50, choices=Unite.choices)
     
 class Batch(models.Model):
-    nom = models.CharField(max_length=200)
+    nom = models.CharField(max_length=200, unique=True)
     
     def __str__(self):
         return self.nom

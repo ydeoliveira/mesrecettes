@@ -10,6 +10,6 @@ class SourceAutocomplete(autocomplete.Select2QuerySetView):
         qs = Source.objects.all()
 
         if self.q:
-            qs = qs.filter(nom__istartswith=self.q)
+            qs = qs.filter(nom__contains=self.q)
 
         return qs
