@@ -11,12 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from corsheaders.defaults import default_headers
 from django.conf.global_settings import STATICFILES_DIRS
 
-CORS_ALLOW_HEADERS = default_headers + (
-    'Access-Control-Allow-Origin',
-)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
