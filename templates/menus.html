@@ -8,12 +8,18 @@
 			<div class="grid_6">
 	        	<div class="box">
 	          	<div class="maxheight">
-				<h3>Menu du {{m.date}} au {{m.date_fin}} <a href="{%url 'courses' m.id%}"><img width="20" height="20" src="{%static 'images/cart-icon.jpg'%}" /></a>
-				<a href="{%url 'gridmenu' m.id%}"><img width="20" height="20" src="{%static 'images/grid.png'%}" /></a>
+				<h3>Menu du {{m.date}} au {{m.date_fin}} <a href="{%url 'courses' m.id%}"><img width="25" height="25" src="{%static 'images/cart-icon.png'%}" /></a>
+				<a href="{%url 'gridmenu' m.id%}"><img width="25" height="25" src="{%static 'images/grid.png'%}" /></a>
 				</h3>
 				<ul>
 				{%for r in m.recettes.all%}
-				<li /><h4>{{r.nom}}</h4><i>{{r.reference}} - {{r.source}}</i><br />
+				<li /><h4>{{r.nom}}</h4><i>{{r.reference}} - 
+				{%if r.source|slice:":8" == 'https://' %}
+				<a href="{{r.source}}" target="_blank"><img width="10" height="10" src="{%static 'images/link.png'%}"/></a>
+				{%else%}
+				{{r.source}}
+				{%endif%}
+				</i><br />
 				<center>***</center>
 				{%endfor%}
 				</ul>
