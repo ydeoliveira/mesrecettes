@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render
 from django.views.generic import View
 
@@ -34,3 +36,11 @@ class Courses(View):
                 if _ing.placard == False :
                     courses[_rayon][_ing][_unite] += ingredient.quantite * repas.portions / ingredient.recette.nombre
         return render(request, self.template_name, {'courses': courses, 'placard':placard})
+
+class GridMenu(View):
+    template_name = "grid.html"
+    def get(self, request, *args, **kwargs):
+        menu = Menu.objects.get(id=kwargs['pk'])
+        date_range = [menu.date + datetime.timedelta(days=x) for x in range((menu.date_fin-menu.date).days+1)]
+        print(date_range)
+        return render(request, self.template_name, {'menu':menu, 'dates':date_range, 'weekdays':list(range(7,1000,7)), 'sevendays':list(range(0,7)) })

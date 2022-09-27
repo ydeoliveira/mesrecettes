@@ -26,3 +26,11 @@ class SearchEngine(View):
                 recettes = recettes.filter(ingredients=ing)
             return render(request, self.template_name, {'form': form, 'recettes':recettes.distinct()})
         return render(request, self.template_name, {'form': form})
+    
+class Recettes(View):
+    template_name = 'recettes.html'
+    
+    def get(self, request, *args, **kwargs):
+        recettes = Recette.objects.all()
+        return render(request, self.template_name, {'recettes':recettes})
+    
