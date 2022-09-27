@@ -1,0 +1,26 @@
+{%extends "base.html"%}
+{%load static%}
+
+{%block main_content%}
+
+<table style:"border: 1px solid">
+<tr>
+<td></td>
+{%for d in dates %}
+	<td><b>{{d|date:"D d N"}}</b></td>
+	{%if forloop.counter in weekdays %}
+		</tr>
+		<tr><td>Midi</td>
+		{%for i in sevendays%}
+			<td>-</td>
+		{%endfor%}
+		</tr><tr><td>Soir</td>
+		{%for i in sevendays%}
+			<td>-</td>
+		{%endfor%}
+		</tr><tr><td></td>
+	{%endif%}
+{%endfor%}
+</tr>
+</table>
+{%endblock%}

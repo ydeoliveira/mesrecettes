@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-_-uywy&088ms0l120^my*zp+8drgd4907scn%3i@#hf8g%ms-y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['06121978.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1','06121978.pythonanywhere.com']
 
 
 # Application definition
@@ -119,10 +119,11 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
+DATE_FORMAT = 'j/m/Y'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
