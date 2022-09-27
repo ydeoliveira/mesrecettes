@@ -1,26 +1,51 @@
-{%extends "base.html"%}
 {%load static%}
 
+<html>
+<head>
+<link rel="stylesheet" href="{% static "/css/style.css" %}" >
+</head>
+<body>
 {%block main_content%}
+<div style="float:left;margin-right:15px">
+	<table style:"border: 1px solid">
+	<tr>
+	<td></td>
+	{%for d in dates %}
+		<td><b>{{d|date:"D d N"}}</b></td>
+		{%if forloop.counter in weekdays %}
+			</tr>
+			<tr><td>Midi</td>
+			{%for i in sevendays%}
+				<td height="80px" width="100px"></td>
+			{%endfor%}
+			</tr>
+			<tr><td>Soir</td>
+			{%for i in sevendays%}
+				<td height="80px" width="100px"></td>
+			{%endfor%}
+			</tr>
+			<tr><td>Activités</td>
+			<td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/basketball.png'%}" /></center></td><td height="80px" width="100px"></td><td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/fencing.png'%}" /></center></td><td height="80px" width="100px"></td>
+			<td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/pilates.png'%}" /></center></td><td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/fencing.png'%}" /></center></td><td height="80px" width="100px"></td>
+			</tr>
+			<tr><td></td>
+		{%endif%}
+	{%endfor%}
+	</tr>
+	</table>
+</div>
 
-<table style:"border: 1px solid">
-<tr>
-<td></td>
-{%for d in dates %}
-	<td><b>{{d|date:"D d N"}}</b></td>
-	{%if forloop.counter in weekdays %}
-		</tr>
-		<tr><td>Midi</td>
-		{%for i in sevendays%}
-			<td>-</td>
-		{%endfor%}
-		</tr><tr><td>Soir</td>
-		{%for i in sevendays%}
-			<td>-</td>
-		{%endfor%}
-		</tr><tr><td></td>
-	{%endif%}
+<div>
+{%for r in menu.recettes.all %}
+{{r.nom}} (<i>{{r.reference}}
+{%if r.source|slice:":8" == 'https://' %}
+{%else%}
+, {{r.source}}
+{%endif%}
+</i>)<br />
 {%endfor%}
-</tr>
-</table>
+</div>
 {%endblock%}
+
+</body>
+</html>
