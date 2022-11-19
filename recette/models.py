@@ -32,7 +32,7 @@ class Ingredient(models.Model):
         VIANDE = 'V', 'Viande'
         POISSON = 'P', 'Poisson'
         PAIN = 'P1', 'Pain et Patisseries'
-        FRAI = 'F', 'Frai'
+        FRAI = 'F', 'Frais'
         SUREGELE = 'S', 'Surgelé'
         BOISSON = 'B', 'Boisson'
         SALE = 'SA', 'Epicerie salée'
@@ -41,6 +41,7 @@ class Ingredient(models.Model):
     nom = models.CharField(max_length=150, unique=True)
     rayon = models.CharField(max_length=100, choices=Rayon.choices)
     placard = models.BooleanField("Produit du placard", default=False)
+    bio = models.BooleanField("Produit Bio", default=False)
     
     class Meta:
         ordering = ('nom',)
@@ -51,6 +52,7 @@ class Ingredient(models.Model):
 class ListeIngredients(models.Model):
     class Unite(models.TextChoices):
         GRAMME = 'g', 'grammes'
+        UNITE = 'u', 'unités'
         PIECE = 'p', 'pièces'
         CLITRE = 'cl', 'cl'
         CAS = 'cas', 'CaS'

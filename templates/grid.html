@@ -1,5 +1,5 @@
 {%load static%}
-
+{%load getportions%}
 <html>
 <head>
 <link rel="stylesheet" href="{% static "/css/style.css" %}" >
@@ -26,7 +26,7 @@
 			</tr>
 			<tr><td>Activités</td>
 			<td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/basketball.png'%}" /></center></td><td height="80px" width="100px"></td><td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/fencing.png'%}" /></center></td><td height="80px" width="100px"></td>
-			<td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/pilates.png'%}" /></center></td><td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/fencing.png'%}" /></center></td><td height="80px" width="100px"></td>
+			<td height="80px" width="100px"></td><td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/fencing.png'%}" /><br /><img width=50 height=50 src="{%static 'images/pilates.png'%}" /></center></td><td height="80px" width="100px"><center><img width=50 height=50 src="{%static 'images/basketball.png'%}" /></center></td>
 			</tr>
 			<tr><td></td>
 		{%endif%}
@@ -42,7 +42,7 @@
 {%else%}
 , {{r.source}}
 {%endif%}
-</i>)<br />
+</i>) [{{r|ratio:menu}}]<br />
 {%endfor%}
 </div>
 {%endblock%}

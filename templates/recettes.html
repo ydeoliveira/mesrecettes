@@ -7,6 +7,11 @@
 		{%for r in recettes%}
 			<div class="grid_3">
 	        	<div class="box">
+	        	<form action="." method="POST">
+	        		{% csrf_token %} 
+	        		<input type="hidden" value={{r.id}} id="id_recette" name="recette" />
+	        		<input type="image" src="{%static 'images/plus.png'%}" alt="Ajouter au prochain menu" align="right" style="cursor:pointer;padding-bottom:3px" />
+	        	</form>
 	          	<div class="maxheight"><img src="{{r.image}}" alt=""><a href="#">{{r}}</a></div>
 	        	</div>
       		</div>
