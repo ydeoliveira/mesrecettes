@@ -8,6 +8,7 @@ class Recette(models.Model):
         ENTREE = 'Entrée', 'Entrée'
         PLAT = 'Plat','Plat'
         DESSERT = 'Dessert','Dessert'
+        BATCH = 'Batch','Batch'
     
     
     nom = models.CharField(max_length=250, unique=True)
@@ -17,7 +18,6 @@ class Recette(models.Model):
     ingredients = models.ManyToManyField('Ingredient', through='ListeIngredients')
     categorie = models.CharField(max_length=100, choices=Categorie.choices)
     description = models.TextField(blank=True, null=True)
-    batch = models.ForeignKey('Batch', blank=True, null=True, on_delete=models.CASCADE)
     image = models.URLField(max_length=300, blank=True, null=True)
     
     class Meta:
@@ -66,7 +66,17 @@ class ListeIngredients(models.Model):
     unite = models.CharField(max_length=50, choices=Unite.choices)
     
 class Batch(models.Model):
+    class Jours(models.TextChoices):
+        LUNDI = 'lundi', 'lundi'
+        MARDI = 'mardi', 'mardi'
+        MERCREDI = 'mercredi', 'mercredi'
+        JEUDI = 'jeudi', 'jeudi'
+        VENDREDI = 'vendredi', 'vendredi'
+
+    
     nom = models.CharField(max_length=200, unique=True)
+    recette = models.ForeignKey('Recette', on_delete=models.CASCADE)
+    jour = models.CharField(max_length=50, choices=Jours.choices)
     
     def __str__(self):
         return self.nom

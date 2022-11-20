@@ -12,7 +12,14 @@
 	        		<input type="hidden" value={{r.id}} id="id_recette" name="recette" />
 	        		<input type="image" src="{%static 'images/plus.png'%}" alt="Ajouter au prochain menu" align="right" style="cursor:pointer;padding-bottom:3px" />
 	        	</form>
-	          	<div class="maxheight"><img src="{{r.image}}" alt=""><a href="#">{{r}}</a></div>
+	          	<div class="maxheight"><img src="
+	          	{%if r.image%}
+	          		{{r.image}}
+	          	{%else%}
+	          		{%static 'images/no-image-icon-23485.png'%}
+	          	{%endif%}
+	          	
+	          	" alt=""><a href="{%url 'recette' r.id%}">{{r}}</a></div>
 	        	</div>
       		</div>
 		{%endfor%}

@@ -35,7 +35,13 @@ class Courses(View):
                 
                 if _ing.placard == False :
                     courses[_rayon][_ing][_unite] += ingredient.quantite * repas.portions / ingredient.recette.nombre
-        return render(request, self.template_name, {'courses': courses, 'placard':placard})
+        
+        mode = request.GET.get("mode")
+        
+        if mode and mode=="print" :
+            return render(request, "courses-nocss.html", {'courses': courses, 'placard':placard, 'menu':menu})
+        else :
+            return render(request, self.template_name, {'courses': courses, 'placard':placard, 'menu':menu})
 
 class GridMenu(View):
     template_name = "grid.html"

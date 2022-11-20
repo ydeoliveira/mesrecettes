@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import View
+from django.http.response import Http404
 
 from recette.forms import SearchBar
 from recette.models import Recette
 from menu.models import Menu, MenuComposition
+
 
 DEFAULT_PORTION = 5
 
@@ -53,5 +55,12 @@ class Recettes(View):
         else :
             recettes = Recette.objects.all()
             return render(request, self.template_name, {'recettes':recettes})
-        
-        
+
+class VueRecette(View):
+    template_name = 'recette-view.html'
+    def get(self,request, *args, **kwargs):
+        try:
+            recette = Recette.objects.get(id=kwargs['pk'])
+            return render(request, self.template_name, {'recette':recette})
+        except :
+            return Http404

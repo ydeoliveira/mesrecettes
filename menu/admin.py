@@ -12,5 +12,5 @@ class MenuAdmin(admin.ModelAdmin):
     inlines = [
         MenuCompositionInline,
     ]
-    
+
 admin.site.register(Menu, MenuAdmin)

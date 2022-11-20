@@ -1,0 +1,44 @@
+{%load static%}
+
+<html>
+<head>
+</head>
+<body>
+
+{%block main_content%}
+
+{%if courses%}
+	<table><tr>
+		{% for rayon, list_rayon in courses.items %}
+		<td>
+			<h3>{{rayon}}</h3>
+			{%for ingredient, list_unite in list_rayon.items%}
+				{{ingredient}} : 
+				{%for unite, quantite in list_unite.items%}
+					{% if forloop.last %}
+						{{quantite}} {{unite}}
+					{%else%}
+						{{quantite}} {{unite}} + 
+					{%endif%}
+				{%endfor%}
+				<a href="https://www.carrefour.fr/s?q={{ingredient.nom}}" target="_blank"><img width=8 height=8 src="{%static 'images/carrefour_logo.png'%}" /></a>
+				<br />
+			{%endfor%}<br />
+			</td>
+			{%if forloop.counter|divisibleby:"4" %}</tr><tr>{%endif%}
+			{%endfor%}
+					
+	</tr></table>
+	{%endif%}
+	<br /><br />
+	{%if placard%}
+		<b>Vérifier les ingrédients suivants :</b><br />
+		{%for element in placard%}
+			{{element}}<br />
+		{%endfor%}
+	{%endif%}
+
+{%endblock%}
+
+</body>
+</html>

@@ -4,6 +4,7 @@
 {%block main_content%}
 
 {%if courses%}
+	<a href="{%url 'courses' menu.id%}?mode=print" target="_blank" /><img width=25 height=25 src="{%static 'images/printer.png'%}" /></a>
 	<div class="prod">
 		{% for rayon, list_rayon in courses.items %}
 		<div class="grid_3">

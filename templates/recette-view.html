@@ -1,0 +1,24 @@
+{%extends "base.html"%}
+{%load static%}
+
+{%block main_content%}
+<h1>{{recette.nom}}</h1>
+<center>
+<img src="{%if recette.image%}
+ 		{{recette.image}}
+ 	{%else%}
+ 		{%static 'images/no-image-icon-23485.png'%}
+ 	{%endif%}" /><br />
+ 	
+{{recette.reference}} - 
+{%if r.source|slice:":8" == 'https://' %}
+{%else%}
+, {{r.source}}
+{%endif%}<br />
+</center>
+
+<h3>Liste des ingrédients</h3>
+{%for ing in recette.listeingredients_set.all%}
+{{ing.ingredient}} : {{ing.quantite}} {{ing.unite}}<br />
+{%endfor%}
+{%endblock%}
