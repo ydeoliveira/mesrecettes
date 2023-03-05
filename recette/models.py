@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.deletion import CASCADE
 
 # Create your models here.
 
@@ -25,6 +24,12 @@ class Recette(models.Model):
     
     def __str__(self):
         return self.nom
+
+    def is_batch(self):
+        if self.categorie == self.Categorie.BATCH :
+            return True
+        else :
+            return False
 
 class Ingredient(models.Model):
     class Rayon(models.TextChoices):

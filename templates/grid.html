@@ -37,12 +37,19 @@
 
 <div>
 {%for r in menu.recettes.all %}
-{{r.nom}} (<i>{{r.reference}}
-{%if r.source|slice:":8" == 'https://' %}
+{%if r.is_batch %}
+	{%for brecipe in r.batch_set.all%}
+		&#x2610; {{brecipe.nom}} (<i>{{r.nom}}, {{r.reference}}, {{r.source}}</i>) [{{r|ratio:menu}}]<br />
+	{%endfor%}
 {%else%}
-, {{r.source}}
+	&#x2610; {{r.nom}} (<i>{{r.reference}}
+	{%if r.source|slice:":8" == 'https://' %}
+	{%else%}
+	, {{r.source}}
+	{%endif%}
+	</i>) [{{r|ratio:menu}}]<br />
 {%endif%}
-</i>) [{{r|ratio:menu}}]<br />
+
 {%endfor%}
 </div>
 {%endblock%}

@@ -10,12 +10,21 @@
  		{%static 'images/no-image-icon-23485.png'%}
  	{%endif%}" /><br />
  	
-{{recette.reference}} - 
-{%if r.source|slice:":8" == 'https://' %}
+{{recette.reference}} 
+{%if recette.source|slice:":8" == 'https://' %}
 {%else%}
-, {{r.source}}
+, {{recette.source}}
 {%endif%}<br />
+
 </center>
+
+{%if recette.is_batch%}
+<h3>Liste des recettes</h3>
+
+{%for brecipe in recette.batch_set.all%}
+		{{brecipe.nom}} <br />
+	{%endfor%}
+{%endif%}
 
 <h3>Liste des ingrédients</h3>
 {%for ing in recette.listeingredients_set.all%}
