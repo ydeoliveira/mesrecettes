@@ -14,10 +14,17 @@
 					{%for ingredient, list_unite in list_rayon.items%}
 						{{ingredient}} : 
 						{%for unite, quantite in list_unite.items%}
-							{% if forloop.last %}
-								{{quantite}} {{unite}}
+							{%if unite == "0repas"%}
+								{%for r in quantite%}
+									({{r}})
+								{%endfor%}
+
 							{%else%}
-								{{quantite}} {{unite}} + 
+								{% if forloop.last %}
+									{{quantite}} {{unite}}
+								{%else%}
+									{{quantite}} {{unite}} + 
+								{%endif%}
 							{%endif%}
 						{%endfor%}
 						<a href="https://www.carrefour.fr/s?q={{ingredient.nom}}" target="_blank"><img width=8 height=8 src="{%static 'images/carrefour_logo.png'%}" /></a>
@@ -29,11 +36,19 @@
 	</div>
 	{%endif%}
 	<br /><br />
-	{%if placard%}
-		<b>Vérifier les ingrédients suivants :</b><br />
-		{%for element in placard%}
-			{{element}}<br />
-		{%endfor%}
-	{%endif%}
+	<div style="float:left">
+		{%if placard%}
+			<b>Vérifier les ingrédients suivants :</b><br />
+			{%for element in placard%}
+				{{element}}<br />
+			{%endfor%}
+		{%endif%}
+	</div>
+	<div style="float:right">
+	<b>Liste des plats :</b><br />
+	{%for tag, r in repas.items%}
+	({{tag}}) : {{r.recette.nom}}<br />
+	{%endfor%}
+	</div>
 
 {%endblock%}
