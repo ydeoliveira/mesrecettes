@@ -8,34 +8,33 @@
 {%block main_content%}
 
 {%if courses%}
-	<table><tr>
-		{% for rayon, list_rayon in courses.items %}
+<table><tr>
+		{% for rayon in courses.get_rayons %}
 		<td>
-			<h3>{{rayon}}</h3>
-			{%for ingredient, list_unite in list_rayon.items%}
-				{{ingredient}} : 
-				{%for unite, quantite in list_unite.items%}
-							{%if unite == "0repas"%}
-								{%for r in quantite%}
-									({{r}})
-								{%endfor%}
-
+					<h3>{{rayon.name}}</h3>
+					{%for ingredient in rayon.get_ingredients%}
+						{{ingredient.name}} : 
+						{%for unite, quantite in ingredient.liste.items%}
+							{% if forloop.last %}
+									{{quantite|floatformat:2}} {{unite}}
 							{%else%}
-								{% if forloop.last %}
-									{{quantite}} {{unite}}
-								{%else%}
-									{{quantite}} {{unite}} + 
-								{%endif%}
+									{{quantite|floatformat:2}} {{unite}} + 
 							{%endif%}
 						{%endfor%}
-				<a href="https://www.carrefour.fr/s?q={{ingredient.nom}}" target="_blank"><img width=8 height=8 src="{%static 'images/carrefour_logo.png'%}" /></a>
-				<br />
-			{%endfor%}<br />
-			</td>
+						({%for plat in ingredient.get_recettes%}
+							{% if forloop.last %}
+									{{plat}}
+							{%else%}
+									{{plat}},
+							{%endif%}
+						{%endfor%})
+						<a href="https://www.carrefour.fr/s?q={{ingredient.nom}}" target="_blank"><img width=8 height=8 src="{%static 'images/carrefour_logo.png'%}" /></a>
+						<br />
+					{%endfor%}<br />
+					</td>
 			{%if forloop.counter|divisibleby:"4" %}</tr><tr>{%endif%}
 			{%endfor%}
-					
-	</tr></table>
+			</tr></table>
 	{%endif%}
 	<br /><br />
 	<div style="float:left">

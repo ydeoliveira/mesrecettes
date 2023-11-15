@@ -12,6 +12,7 @@
  	
 {{recette.reference}} 
 {%if recette.source|slice:":8" == 'https://' %}
+	<a href="{{recette.source}}" target="_blank"><img width="10" height="10" src="{%static 'images/link.png'%}"/></a>
 {%else%}
 , {{recette.source}}
 {%endif%}<br />

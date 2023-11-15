@@ -9,7 +9,15 @@
 
 input {
 	outline:  none !important;
-	border-radius: 0 !important;	 
+	border-radius: 0 !important;
+}
+
+select {
+	border: 1px solid #aaa;
+	padding: 7px 10px 5px;
+	background-color: #fff;
+	border-radius:4px;
+	height: 32px;
 }
 
 button {

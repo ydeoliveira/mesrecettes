@@ -1,11 +1,14 @@
 from django.db import models
 
+from recette.managers import RecetteManager
 # Create your models here.
 
 class Recette(models.Model):
     class Categorie(models.TextChoices):
         ENTREE = 'Entrée', 'Entrée'
-        PLAT = 'Plat','Plat'
+        PLAT = 'Plat','Plat',
+        WEEKEND = 'Plat du weekend','Plat du weekend',
+        VEGE = 'Plat végé','Plat végé',
         DESSERT = 'Dessert','Dessert'
         BATCH = 'Batch','Batch'
     
@@ -18,6 +21,8 @@ class Recette(models.Model):
     categorie = models.CharField(max_length=100, choices=Categorie.choices)
     description = models.TextField(blank=True, null=True)
     image = models.URLField(max_length=300, blank=True, null=True)
+    
+    objects = RecetteManager()
     
     class Meta:
         ordering = ('nom',)

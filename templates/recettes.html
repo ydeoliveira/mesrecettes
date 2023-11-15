@@ -2,14 +2,25 @@
 {%load static%}
 
 {%block main_content%}
+<div>
+	{{ form.media }}
+	<form method="post">
+		{% csrf_token %}
+		{{form.ingredients.label}} : {{form.ingredients}}&nbsp;&nbsp;&nbsp;&nbsp;
+		{{form.categorie.label}} : {{form.categorie}}
+		<input type="hidden" name="filtering" value="filtering"/>
+		<button type="submit"><img src="{% static "/images/link_marker.png" %}"/> </button>
+	</form>
+</div>
 {%if recettes%}
 		<div class="prod">
 		{%for r in recettes%}
 			<div class="grid_3">
 	        	<div class="box">
-	        	<form action="." method="POST">
+	        	<form action="." method="POST" id="menus">
 	        		{% csrf_token %} 
 	        		<input type="hidden" value={{r.id}} id="id_recette" name="recette" />
+	        		<input type="number" id="id_portions" name="portions" min="1" max="20" style="padding-top:3px;width:35px;align:right" />
 	        		<input type="image" src="{%static 'images/plus.png'%}" alt="Ajouter au prochain menu" align="right" style="cursor:pointer;padding-bottom:3px" />
 	        	</form>
 	          	<div class="maxheight"><img src="
@@ -24,5 +35,23 @@
       		</div>
 		{%endfor%}
 		</div>
+		
+		<div class="pagination">
+    		<span class="step-links">
+		        {% if recettes.has_previous %}
+		            <a href="?page=1">&laquo; first</a>
+		            <a href="?page={{ recettes.previous_page_number }}">previous</a>
+		        {% endif %}
+
+        <span class="current">
+            Page {{ recettes.number }} of {{ recettes.paginator.num_pages }}.
+        </span>
+
+        {% if recettes.has_next %}
+            <a href="?page={{ recettes.next_page_number }}">next</a>
+            <a href="?page={{ recettes.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 	{%endif%}
 {%endblock%}

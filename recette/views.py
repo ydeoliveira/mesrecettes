@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.http.response import Http404
+from django.core.paginator import Paginator
 
 from recette.forms import SearchBar
 from recette.models import Recette
@@ -26,35 +27,58 @@ class SearchEngine(View):
         form = SearchBar(data=request.POST)
         if form.is_valid():
             ingredients = request.POST.getlist('ingredients')
-            recettes = Recette.objects.all()
-            for ing in ingredients :
-                recettes = recettes.filter(ingredients=ing)
+            categorie = request.POST.get('categorie')
+            recettes = Recette.objects.search_form(ingredients, categorie)
             return render(request, self.template_name, {'form': form, 'recettes':recettes.distinct()})
         return render(request, self.template_name, {'form': form})
     
 class Recettes(View):
     template_name = 'recettes.html'
     
+    def _paginated_values(self, request, recettes):
+        p = Paginator(recettes, 16)
+        page_number = request.GET.get("page")
+        page_obj = p.get_page(page_number)
+        return page_obj
+    
     def get(self, request, *args, **kwargs):
+        form = SearchBar()
         recettes = Recette.objects.all()
-        return render(request, self.template_name, {'recettes':recettes})
+        page_obj = self._paginated_values(request, recettes)
+        return render(request, self.template_name, {'recettes':page_obj,'form':form})
     
     def post(self, request, *args, **kwargs):
-        recetteid = request.POST.get("recette")
-        print(recetteid)
-        try :
-            recette = Recette.objects.get(id=recetteid)
-            m = Menu.objects.all().order_by('-date_fin')[0]
-            MenuComposition.objects.create(recette=recette,
-                                           menu = m,
-                                           portions=DEFAULT_PORTION)
-        except Exception as e:
-            print(e)
-            recettes = Recette.objects.all()
-            return render(request, self.template_name, {'recettes':recettes})
+        if "filtering" in request.POST :
+            form = SearchBar(data=request.POST)
+            if form.is_valid():
+                ingredients = request.POST.getlist('ingredients')
+                categorie = request.POST.get('categorie')
+                request.session['ingredients']=ingredients
+                request.session['categorie']=categorie
+                recettes = Recette.objects.search_form(ingredients, categorie)
+                page_obj = self._paginated_values(request, recettes.distinct())
+                return render(request, self.template_name, {'recettes':page_obj,'form':form})
+        elif "recette" in request.POST :
+            recetteid = request.POST.get("recette")
+            portions = request.POST.get("portions")
+            if not portions :
+                portions = DEFAULT_PORTION
+            try :
+                recette = Recette.objects.get(id=recetteid)
+                m = Menu.objects.all().order_by('-date_fin')[0]
+                MenuComposition.objects.create(recette=recette,
+                                               menu = m,
+                                               portions=portions)
+            except Exception as e:
+                recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
+                page_obj = self._paginated_values(request, recettes.distinct())
+                return render(request, self.template_name, {'recettes':page_obj, 'form':SearchBar(data=request.session)})
+            else :
+                recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
+                page_obj = self._paginated_values(request, recettes.distinct())
+                return render(request, self.template_name, {'recettes':page_obj, 'form':SearchBar(data=request.session)})
         else :
-            recettes = Recette.objects.all()
-            return render(request, self.template_name, {'recettes':recettes})
+            raise Http404()
 
 class VueRecette(View):
     template_name = 'recette-view.html'

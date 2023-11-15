@@ -34,6 +34,10 @@ class SearchBar(forms.Form):
         queryset=Ingredient.objects.all(),
         widget=autocomplete.ModelSelect2Multiple(
             url='ingredient-autocomplete',
-            ))
+            ),
+        required=False)
+    
+    categorie = forms.ChoiceField(choices=Recette.Categorie.choices,
+        required=False)
 
     
