@@ -35,16 +35,19 @@ class SearchEngine(View):
 class Recettes(View):
     template_name = 'recettes.html'
     
-    def _paginated_values(self, request, recettes):
+    def _paginated_values(self, request, recettes, page_number):
         p = Paginator(recettes, 16)
-        page_number = request.GET.get("page")
         page_obj = p.get_page(page_number)
         return page_obj
     
     def get(self, request, *args, **kwargs):
         form = SearchBar()
-        recettes = Recette.objects.all()
-        page_obj = self._paginated_values(request, recettes)
+        try :
+            recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
+            form = SearchBar(data=request.session)
+        except Exception as e:
+            recettes = Recette.objects.all()
+        page_obj = self._paginated_values(request, recettes, request.GET.get("page"))
         return render(request, self.template_name, {'recettes':page_obj,'form':form})
     
     def post(self, request, *args, **kwargs):
@@ -56,7 +59,7 @@ class Recettes(View):
                 request.session['ingredients']=ingredients
                 request.session['categorie']=categorie
                 recettes = Recette.objects.search_form(ingredients, categorie)
-                page_obj = self._paginated_values(request, recettes.distinct())
+                page_obj = self._paginated_values(request, recettes.distinct(), 1)
                 return render(request, self.template_name, {'recettes':page_obj,'form':form})
         elif "recette" in request.POST :
             recetteid = request.POST.get("recette")
@@ -71,11 +74,11 @@ class Recettes(View):
                                                portions=portions)
             except Exception as e:
                 recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
-                page_obj = self._paginated_values(request, recettes.distinct())
+                page_obj = self._paginated_values(request, recettes.distinct(), request.GET.get("page"))
                 return render(request, self.template_name, {'recettes':page_obj, 'form':SearchBar(data=request.session)})
             else :
                 recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
-                page_obj = self._paginated_values(request, recettes.distinct())
+                page_obj = self._paginated_values(request, recettes.distinct(), request.GET.get("page"))
                 return render(request, self.template_name, {'recettes':page_obj, 'form':SearchBar(data=request.session)})
         else :
             raise Http404()

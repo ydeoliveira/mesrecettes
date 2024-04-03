@@ -5,13 +5,14 @@ from recette.managers import RecetteManager
 
 class Recette(models.Model):
     class Categorie(models.TextChoices):
+        __empty__ = "---------"
         ENTREE = 'Entrée', 'Entrée'
         PLAT = 'Plat','Plat',
         WEEKEND = 'Plat du weekend','Plat du weekend',
         VEGE = 'Plat végé','Plat végé',
         DESSERT = 'Dessert','Dessert'
         BATCH = 'Batch','Batch'
-    
+        
     
     nom = models.CharField(max_length=250, unique=True)
     reference = models.ForeignKey('source.Source', on_delete=models.CASCADE)
@@ -69,6 +70,8 @@ class ListeIngredients(models.Model):
         CAC = 'cac', 'CaC'
         BOTTE = 'b','bottes'
         VERRE = 'v', 'verres'
+        CM = 'cm', 'centimètres'
+        TRANCHE = 'tr', 'tranches'
         
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE)
     recette = models.ForeignKey('Recette', on_delete=models.CASCADE)
