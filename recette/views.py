@@ -43,8 +43,13 @@ class Recettes(View):
     def get(self, request, *args, **kwargs):
         form = SearchBar()
         try :
-            recettes = Recette.objects.search_form(request.session.get('ingredients'), request.session.get('categorie'))
-            form = SearchBar(data=request.session)
+            if request.GET.get("page") :
+                recettes = Recette.objects.search_form(request.session.get('ingredients'), request.session.get('categorie'))
+                form = SearchBar(data=request.session)
+            else :
+                del request.session['ingredients']
+                del request.session['categorie']
+                recettes = Recette.objects.all()
         except Exception as e:
             recettes = Recette.objects.all()
         page_obj = self._paginated_values(request, recettes, request.GET.get("page"))
