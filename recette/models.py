@@ -4,14 +4,14 @@ from recette.managers import RecetteManager
 # Create your models here.
 
 class Recette(models.Model):
-    class Categorie(models.TextChoices):
-        __empty__ = "---------"
-        ENTREE = 'Entrée', 'Entrée'
-        PLAT = 'Plat','Plat',
-        WEEKEND = 'Plat du weekend','Plat du weekend',
-        VEGE = 'Plat végé','Plat végé',
-        DESSERT = 'Dessert','Dessert'
-        BATCH = 'Batch','Batch'
+    # class Categorie(models.TextChoices):
+    #     __empty__ = "---------"
+    #     ENTREE = 'Entrée', 'Entrée'
+    #     PLAT = 'Plat','Plat',
+    #     WEEKEND = 'Plat du weekend','Plat du weekend',
+    #     VEGE = 'Plat végé','Plat végé',
+    #     DESSERT = 'Dessert','Dessert'
+    #     BATCH = 'Batch','Batch'
         
     
     nom = models.CharField(max_length=250, unique=True)
@@ -19,9 +19,11 @@ class Recette(models.Model):
     source = models.CharField(max_length=200)
     nombre = models.IntegerField()
     ingredients = models.ManyToManyField('Ingredient', through='ListeIngredients')
-    categorie = models.CharField(max_length=100, choices=Categorie.choices)
+    #categorie = models.CharField(max_length=100, choices=Categorie.choices)
+    categories = models.ManyToManyField('recette.Categorie')
     description = models.TextField(blank=True, null=True)
     image = models.URLField(max_length=300, blank=True, null=True)
+    is_batch = models.BooleanField()
     
     objects = RecetteManager()
     
@@ -31,11 +33,11 @@ class Recette(models.Model):
     def __str__(self):
         return self.nom
 
-    def is_batch(self):
-        if self.categorie == self.Categorie.BATCH :
-            return True
-        else :
-            return False
+    # def is_batch(self):
+    #     if self.categorie == self.Categorie.BATCH :
+    #         return True
+    #     else :
+    #         return False
 
 class Ingredient(models.Model):
     class Rayon(models.TextChoices):
@@ -93,4 +95,10 @@ class Batch(models.Model):
     
     def __str__(self):
         return self.nom
-     
+
+class Categorie(models.Model):
+    
+    nom = models.CharField(max_length=100, unique=True)
+    
+    def __str__(self):
+        return self.nom

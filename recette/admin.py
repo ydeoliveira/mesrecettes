@@ -1,5 +1,5 @@
 from django.contrib import admin
-from recette.models import Recette, Ingredient, ListeIngredients, Batch
+from recette.models import Recette, Ingredient, ListeIngredients, Batch, Categorie
 from recette.forms import RecetteForm, ListeIngredientForm, BatchForm
 # Register your models here.
 class ListeIngredientsInline(admin.TabularInline):
@@ -21,3 +21,4 @@ class BatchAdmin(admin.ModelAdmin):
 admin.site.register(Recette, RecetteAdmin)
 admin.site.register(Ingredient)
 admin.site.register(Batch, BatchAdmin)
+admin.site.register(Categorie)

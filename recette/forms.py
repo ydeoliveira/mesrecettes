@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django import forms
 
-from recette.models import Recette, ListeIngredients, Ingredient, Batch
+from recette.models import Recette, ListeIngredients, Ingredient, Batch, Categorie
 
 class RecetteForm(forms.ModelForm):
     class Meta:
@@ -9,7 +9,8 @@ class RecetteForm(forms.ModelForm):
         fields = ('__all__')
         widgets = {
             'reference': autocomplete.ModelSelect2(url='source-autocomplete'),
-            'batch': autocomplete.ModelSelect2(url='batch-autocomplete'),
+            #'batch': autocomplete.ModelSelect2(url='batch-autocomplete'),
+            'categories': autocomplete.ModelSelect2Multiple(url='categorie-autocomplete'),
         }
 
 class ListeIngredientForm(forms.ModelForm):
@@ -27,7 +28,7 @@ class BatchForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(BatchForm, self).__init__(*args, **kwargs)
-        self.fields['recette'].queryset = Recette.objects.filter(categorie=Recette.Categorie.BATCH)
+        self.fields['recette'].queryset = Recette.objects.filter(is_batch=True)
     
 class SearchBar(forms.Form):
     ingredients = forms.ModelMultipleChoiceField(
@@ -37,7 +38,14 @@ class SearchBar(forms.Form):
             ),
         required=False)
     
-    categorie = forms.ChoiceField(choices=Recette.Categorie.choices,
+    # categorie = forms.ChoiceField(choices=Recette.Categorie.choices,
+    #     required=False)
+    
+    categorie = forms.ModelChoiceField(
+        queryset=Categorie.objects.all(),
+        # widget=autocomplete.ModelSelect2Multiple(
+        #     url='ingredient-autocomplete',
+        #     ),
         required=False)
 
     

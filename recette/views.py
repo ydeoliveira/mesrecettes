@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from recette.forms import SearchBar
 from recette.models import Recette
 from menu.models import Menu, MenuComposition
+from statsmodels.stats.proportion import confint_proportions_2indep
 
 
 DEFAULT_PORTION = 5
@@ -43,7 +44,7 @@ class Recettes(View):
     def get(self, request, *args, **kwargs):
         form = SearchBar()
         try :
-            recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
+            recettes = Recette.objects.search_form(request.session.get('ingredients'), request.session.get('categorie'))
             form = SearchBar(data=request.session)
         except Exception as e:
             recettes = Recette.objects.all()
@@ -69,15 +70,21 @@ class Recettes(View):
             try :
                 recette = Recette.objects.get(id=recetteid)
                 m = Menu.objects.all().order_by('-date_fin')[0]
-                MenuComposition.objects.create(recette=recette,
-                                               menu = m,
-                                               portions=portions)
+                if m.recettes.filter(id=recette.id).exists() :
+                    mc = MenuComposition.objects.get(recette=recette,
+                                                   menu = m)
+                    mc.portions = mc.portions+int(portions)
+                    mc.save()
+                else :
+                    MenuComposition.objects.create(recette=recette,
+                                                   menu = m,
+                                                   portions=portions)
             except Exception as e:
-                recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
+                recettes = Recette.objects.search_form(request.session.get('ingredients'), request.session.get('categorie'))
                 page_obj = self._paginated_values(request, recettes.distinct(), request.GET.get("page"))
                 return render(request, self.template_name, {'recettes':page_obj, 'form':SearchBar(data=request.session)})
             else :
-                recettes = Recette.objects.search_form(request.session['ingredients'], request.session['categorie'])
+                recettes = Recette.objects.search_form(request.session.get('ingredients'), request.session.get('categorie'))
                 page_obj = self._paginated_values(request, recettes.distinct(), request.GET.get("page"))
                 return render(request, self.template_name, {'recettes':page_obj, 'form':SearchBar(data=request.session)})
         else :
