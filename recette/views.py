@@ -6,7 +6,6 @@ from django.core.paginator import Paginator
 from recette.forms import SearchBar
 from recette.models import Recette
 from menu.models import Menu, MenuComposition
-from statsmodels.stats.proportion import confint_proportions_2indep
 
 
 DEFAULT_PORTION = 5
